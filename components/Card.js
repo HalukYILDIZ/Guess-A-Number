@@ -1,15 +1,10 @@
 import React from 'react';
-import {View, TextInput, Text, StyleSheet, Button} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
-const Card = () => {
+const Card = props => {
   return (
-    <View style={styles.inputContainer}>
-      <Text>Select a Number</Text>
-      <TextInput style={styles.input} />
-      <View style={styles.buttonContainer}>
-        <Button title="reset" />
-        <Button title="confirm" />
-      </View>
+    <View style={{...styles.inputContainer, ...props.style}}>
+      {props.children}
     </View>
   );
 };
