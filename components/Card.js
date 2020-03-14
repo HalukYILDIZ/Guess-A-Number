@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     alignItems: 'center',
+    margin: 15,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     //borderBottomWidth: 1,
     // marginBottom: 10,
     padding: 20,
+    margin: 15,
     shadowColor: 'black',
     shadowOffset: {height: 2, width: 0},
     shadowOpacity: 0.26,
