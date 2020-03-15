@@ -13,6 +13,7 @@ const App = () => {
   let content = <StartGameScreen onStartGame={startGameHandler} />;
   console.log(`usernumber:${userNumber}`);
   if (userNumber) {
+    console.log(`appjs içinde userNumber:${userNumber}`);
     content = <GameScreen userChoice={userNumber} />;
   }
 
