@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, Button, StyleSheet, Alert} from 'react-native';
 
 import NumberContainer from '../components/NumberContainer';
@@ -7,9 +7,8 @@ import Card from '../components/Card';
 const generateRandomBetween = (min, max, exclude) => {
   min = Math.ceil(min);
   max = Math.floor(max);
-  console.log(`minimum:${min} maximum:${max}`);
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
-  console.log(`rndnum:${rndNum}`);
+
   if (rndNum === exclude) {
     return generateRandomBetween(min, max, exclude);
   } else {
@@ -19,18 +18,23 @@ const generateRandomBetween = (min, max, exclude) => {
 
 const GameScreen = props => {
   const [currentGuess, setCurrentGuess] = useState(
-    generateRandomBetween(1, 100, props.userChoice),
+    generateRandomBetween(1, 100, userChoice),
   );
   const currentLow = useRef(1); // component tekrar render olduğunda bunlar yenilenmez
   const currentHigh = useRef(100);
+  const [rounds, setRounds] = useState(0);
+
+  const {userChoice, onGameOver} = props; // props.userChoice yerine userChoice kullanabilirim.
+
+  useEffect(() => {
+    if (currentGuess == userChoice) {
+      onGameOver(rounds);
+    }
+  }, [currentGuess, userChoice, onGameOver]);
+  //yukarısının çalıştığı her durumda bu fonksiyon çalışacaktır
+  // ikinci parametre olarak verilen currntguess değeri değiştiğinde fonksiyon çalışacaktır.
 
   const nextGuessHandler = direction => {
-    console.log(`userchoice:${props.userChoice}`);
-    console.log(`currentguess:${currentGuess}`);
-    console.log(direction);
-    console.log(direction === 'lower' && currentGuess > props.userChoice);
-    console.log(direction === 'greater' && currentGuess < props.userChoice);
-
     if (
       (direction === 'lower' && currentGuess < props.userChoice) ||
       (direction === 'greater' && currentGuess > props.userChoice)
@@ -49,6 +53,7 @@ const GameScreen = props => {
       currentGuess,
     );
     setCurrentGuess(nextNumber);
+    setRounds(curRounds => curRounds + 1);
   };
   return (
     <View style={styles.container}>

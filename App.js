@@ -3,18 +3,38 @@ import {StyleSheet, View} from 'react-native';
 import Header from './components/Header';
 import StartGameScreen from './screens/StartGameScreen';
 import GameScreen from './screens/GameScreen';
+import GameOverScreen from './screens/GameOverScreen';
 
 const App = () => {
   const [userNumber, setUserNumber] = useState();
+  const [guessRounds, setGuessRounds] = useState(0);
 
   const startGameHandler = selectedNumber => {
     setUserNumber(selectedNumber);
+    setGuessRounds(0);
+  };
+
+  const newGameStarter = () => {
+    setUserNumber(null);
+  };
+
+  const gameOverHandler = numOfRounds => {
+    setGuessRounds(numOfRounds);
   };
   let content = <StartGameScreen onStartGame={startGameHandler} />;
-  console.log(`usernumber:${userNumber}`);
-  if (userNumber) {
-    console.log(`appjs içinde userNumber:${userNumber}`);
-    content = <GameScreen userChoice={userNumber} />;
+
+  if (userNumber && guessRounds <= 0) {
+    content = (
+      <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
+    );
+  } else if (guessRounds > 0) {
+    content = (
+      <GameOverScreen
+        roundsNumber={guessRounds}
+        userNumber={userNumber}
+        newGameStarter={newGameStarter}
+      />
+    );
   }
 
   return (
