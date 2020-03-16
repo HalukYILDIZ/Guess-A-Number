@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -26,12 +26,6 @@ const StartGameScreen = props => {
     Dimensions.get('window').width / 4,
   );
 
-  const updateLayout = () => {
-    setButtonWidth(Dimensions.get('window').width / 4);
-  };
-
-  Dimensions.addEventListener('change', updateLayout); //ekran yatırıldığında boyutları tekrar ayarlanmasını sağlar
-
   const numberInputHandler = inputText => {
     setEnteredValue(inputText.replace(/[^0-9]/g, '')); // g globaly tüm text'i gezer ve 0-9 dışındaki tüm değerleri boş kabul eder
   };
@@ -39,6 +33,18 @@ const StartGameScreen = props => {
     setEnteredValue('');
     setConfirmed(false);
   };
+
+  useEffect(() => {
+    //useEffect'i addlisner ın sürekli dinlemede olmasını istemediğimiz için kullandık
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get('window').width / 4);
+    };
+
+    Dimensions.addEventListener('change', updateLayout); //ekran yatırıldığında boyutları tekrar ayarlanmasını sağlar
+    return () => {
+      Dimensions.removeEventListener('change', updateLayout);
+    };
+  });
 
   let confirmedOutput;
   if (confirmed) {
