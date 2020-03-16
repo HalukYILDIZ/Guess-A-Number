@@ -62,6 +62,7 @@ const StartGameScreen = props => {
   }
 
   const confirmInputHandler = () => {
+    // eslint-disable-next-line radix
     const chosenNumber = parseInt(enteredValue);
     if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
       Alert.alert('Invalid Number', 'Number should be in  0-99.', [
