@@ -16,6 +16,7 @@ const App = () => {
 
   const newGameStarter = () => {
     setUserNumber(null);
+    setGuessRounds(0);
   };
 
   const gameOverHandler = numOfRounds => {
@@ -39,7 +40,7 @@ const App = () => {
 
   return (
     <View style={styles.screen}>
-      <Header title="Guess a Number" />
+      <Header style={styles.header} title="Guess a Number" />
       {content}
     </View>
   );
@@ -48,6 +49,9 @@ const App = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+  },
+  header: {
+    fontSize: 32,
   },
 });
 
