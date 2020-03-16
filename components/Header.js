@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitle: {
-    color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
