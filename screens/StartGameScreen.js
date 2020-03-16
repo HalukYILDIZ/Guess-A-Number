@@ -7,6 +7,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 
 import Card from '../components/Card';
@@ -19,6 +22,15 @@ const StartGameScreen = props => {
   const [enteredValue, setEnteredValue] = useState('');
   const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState('');
+  const [buttonWidth, setButtonWidth] = useState(
+    Dimensions.get('window').width / 4,
+  );
+
+  const updateLayout = () => {
+    setButtonWidth(Dimensions.get('window').width / 4);
+  };
+
+  Dimensions.addEventListener('change', updateLayout); //ekran yatırıldığında boyutları tekrar ayarlanmasını sağlar
 
   const numberInputHandler = inputText => {
     setEnteredValue(inputText.replace(/[^0-9]/g, '')); // g globaly tüm text'i gezer ve 0-9 dışındaki tüm değerleri boş kabul eder
@@ -58,50 +70,51 @@ const StartGameScreen = props => {
   };
 
   return (
-    <TouchableWithoutFeedback // EKranın herhangi bir yerine dokunulduğunda keyboardu kapatmak için kullanıldı
-      onPress={() => {
-        Keyboard.dismiss();
-      }}>
-      <View style={styles.screen}>
-        <Text style={styles.title}>Start New Game</Text>
-        <Card>
-          <Text>Select a Number</Text>
-          <Input
-            style={styles.input}
-            keyboardType="number-pad"
-            maxLength={2}
-            value={enteredValue}
-            onChangeText={numberInputHandler}
-          />
-          <View style={styles.buttonContainer}>
-            <View style={styles.button}>
-              <Button
-                title="reset"
-                color={Colors.primary}
-                onPress={resetInputHandler}
+    <ScrollView>
+      <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={90}>
+        <TouchableWithoutFeedback // EKranın herhangi bir yerine dokunulduğunda keyboardu kapatmak için kullanıldı
+          onPress={() => {
+            Keyboard.dismiss();
+          }}>
+          <View style={styles.screen}>
+            <Text style={styles.title}>Start New Game</Text>
+            <Card>
+              <Text>Select a Number</Text>
+              <Input
+                style={styles.input}
+                keyboardType="number-pad"
+                maxLength={2}
+                value={enteredValue}
+                onChangeText={numberInputHandler}
               />
-            </View>
-            <View style={styles.button}>
-              <Button
-                title="confirm"
-                color={Colors.accent}
-                onPress={confirmInputHandler}
-              />
-            </View>
+              <View style={styles.buttonContainer}>
+                <View style={{width: buttonWidth}}>
+                  <Button
+                    title="reset"
+                    color={Colors.primary}
+                    onPress={resetInputHandler}
+                  />
+                </View>
+                <View style={{width: buttonWidth}}>
+                  <Button
+                    title="confirm"
+                    color={Colors.accent}
+                    onPress={confirmInputHandler}
+                  />
+                </View>
+              </View>
+            </Card>
+            {confirmedOutput}
           </View>
-        </Card>
-        {confirmedOutput}
-      </View>
-    </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   selectedNumberView: {
     width: '70%',
-  },
-  button: {
-    width: '40%',
   },
   screen: {
     flex: 1,
